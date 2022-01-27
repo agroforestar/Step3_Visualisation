@@ -31,18 +31,16 @@ public class ARPlaceObject : MonoBehaviour
     /// </summary>
     private void Start()
     {
-        crop = new List<Vector3> { new Vector3(8, 0, 4), new Vector3(3, 0, 4) };
-        tree = new List<Vector3> { new Vector3(11, 0, 8), new Vector3(11, 0, 6), new Vector3(11, 0, 4), new Vector3(11, 0, 1),
-                                    new Vector3(1, 0, 8), new Vector3(1, 0, 6), new Vector3(1, 0, 4), new Vector3(1, 0, 1),
-                                    new Vector3(6, 0, 8), new Vector3(6, 0, 6), new Vector3(6, 0, 4), new Vector3(6, 0, 1)};
-        line = new List<Vector3> { new Vector3(11, 0, 5), new Vector3(1, 0, 4), new Vector3(6, 0, 4) };
+        crop = Global.inScene["Crop"];
+        tree = Global.inScene["Tree"];
+        line = Global.inScene["Line"];
         scene = new GameObject();
 
         raycastManager = GetComponent<ARRaycastManager>();
         prefabInstance = new List<GameObject>();
         instanciateType(crop, prefab[0]);
         instanciateType(tree, prefab[1]);
-        instanciateType(line, prefab[2]);
+      //  instanciateType(line, prefab[2]);
         center = FindCenterOfTransforms(prefabInstance);
         foreach (GameObject element in prefabInstance)
         {
