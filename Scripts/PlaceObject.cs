@@ -8,11 +8,8 @@ using UnityEngine.XR.ARSubsystems;
 /// This class is responsible for placing and moving instance of the prefab in the real world.
 /// </summary>
 [RequireComponent(typeof(ARRaycastManager))]
-public class ARPlaceObject : MonoBehaviour
+public class PlaceObject : MonoBehaviour
 {
-    // Reference to the AR Raycast Manager
-    private ARRaycastManager raycastManager;
-    private ARPlaneManager m_ARPlaneManager;
     private ARSessionOrigin aRSessionOrigin;
     // Prefab which will be spawned in the real world.
     [SerializeField]
@@ -37,36 +34,42 @@ public class ARPlaceObject : MonoBehaviour
     {
         scene = new GameObject();
 
-        raycastManager = GetComponent<ARRaycastManager>();
-        m_ARPlaneManager = GetComponent<ARPlaneManager>();
         aRSessionOrigin = GetComponent<ARSessionOrigin>();
         prefabInstance = new List<GameObject>();
+        CreateScene();
+       
+    }
+    /// <summary>
+    /// Create the scene in the space and link all element to scene gameobject
+    /// </summary>
+    public void CreateScene()
+    {
         foreach (string k in Global.inScene.Keys)
         {
-            Debug.Log(k);
             instanciateType(k, Global.inScene[k]);
         }
         center = FindCenterOfTransforms(prefabInstance);
         foreach (GameObject element in prefabInstance)
         {
+            scene.transform.position = center;
             element.transform.parent = scene.transform;
-            element.transform.position = element.transform.position - center;
         }
-        scene.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);    
     }
 
+    /// <summary>
+    /// Instanciate all element present on the list
+    /// </summary>
+    /// <param name="name">name of the element</param>
+    /// <param name="objects">informations (coordinates "coord", the object is composed by others ? "iscomposed")</param>
     private void instanciateType(string name, List<Dictionary<string, object>> objects)
     {
         for(int i = 0; i< objects.Count; i++)
         {
-            Debug.Log(name);
             GameObject prefab = Resources.Load("Prefabs/" + name) as GameObject;
             GameObject temp = Instantiate(prefab);
             if(objects[i].ContainsKey("isComposed") ){
                 List<Vector3> points = (List<Vector3>)objects[i]["isComposed"];
                 Vector3 center = new Vector3(points.Average(x => x[0]), points.Average(x => x[1]), points.Average(x => x[2]));
-                Debug.Log((Vector3)objects[i]["coord"]);
-                Debug.Log(center);
                 temp.transform.position = center;
                 Vector3 scale = new Vector3(points.Max(x => x[0])- points.Min(x => x[0]), points.Max(x => x[1]) - points.Min(x => x[1]), points.Max(x => x[2]) - points.Min(x => x[2]))/2;
                 temp.transform.localScale = temp.transform.localScale + scale;
@@ -94,42 +97,26 @@ public class ARPlaceObject : MonoBehaviour
     /// </summary>
     private void Update()
     {
-        // List of the hit points in real world.
-        var hitList = new List<ARRaycastHit>();
-        Touch touch;
-        if (Input.touchCount < 1 || (touch = Input.GetTouch(0)).phase != TouchPhase.Began) { return; }
+    }
 
-        // Raycast from the center of the screen which should hit only detected surfaces.
-        if (raycastManager.Raycast(new Vector2(Screen.width / 2, Screen.height / 2), hitList, TrackableType.PlaneWithinBounds | TrackableType.PlaneWithinPolygon))
+    /// <summary>
+    /// Active the element and place the scene on the marker position
+    /// </summary>
+    /// <param name="originPoint">marker position</param>
+    public void activateScene(Transform originPoint)
+    {
+        foreach (GameObject child in prefabInstance)
         {
-            foreach (GameObject child in prefabInstance)
+            // In the instance is inactive, enable it.
+            if (!child.activeInHierarchy)
             {
-                // In the instance is inactive, enable it.
-                if (!child.activeInHierarchy)
-                {
-                    child.SetActive(true);
-                }
-                aRSessionOrigin.MakeContentAppearAt(this.transform, hitList[0].pose.position);
+                child.SetActive(true);
             }
-            stopPlaneDectection();
-
-
-            hitList = hitList.OrderBy(h => h.distance).ToList();
-            var hitPoint = hitList[0];
- 
-            scene.transform.position = hitPoint.pose.position;
-            scene.transform.up = hitPoint.pose.up;
-            
            
         }
+        scene.transform.position = Vector3.zero;
+        scene.transform.localScale = new Vector3(0.01f,0.01f, 0.01f);
+        Debug.Log("activated");
     }
 
-    private void stopPlaneDectection()
-    {
-        foreach (var plane in m_ARPlaneManager.trackables)
-        {
-            plane.gameObject.SetActive(false);
-        }
-        m_ARPlaneManager.enabled = false;
-    }
 }

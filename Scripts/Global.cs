@@ -7,7 +7,8 @@ public class Global : MonoBehaviour
 {
 
     public static Loading loading;
-    public static Dictionary<string, List<Vector3>> inScene;
+    public static Dictionary<string, List<Dictionary<string, object>>> inScene;
+    public static Dictionary<string, string> prefab3D;
 
 
     public enum LoadingType

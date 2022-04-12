@@ -69,7 +69,8 @@ public class Loading : MonoBehaviour
         switch (_type)
         {
             case Global.LoadingType.LoadLevel1:
-                SceneManager.LoadScene("ARScene");
+                //SceneManager.LoadScene("ARScene");
+                SceneManager.LoadScene("ARSceneTracking");
                 break;
         }
         StartCoroutine("HidePanel");
