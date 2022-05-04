@@ -64,24 +64,37 @@ public class PlaceObject : MonoBehaviour
     private void instanciateType(string name, List<Dictionary<string, object>> objects)
     {
         for(int i = 0; i< objects.Count; i++)
-        {
-            GameObject prefab = Resources.Load("Prefabs/" + name) as GameObject;
-            GameObject temp = Instantiate(prefab);
-            if(objects[i].ContainsKey("isComposed") ){
+        {        
+            GameObject visu = Resources.Load("Prefabs/" + name + "/" + name + "_0") as GameObject;
+            visu = Instantiate(visu);
+            attachToParent(visu, name);
+
+            if (objects[i].ContainsKey("isComposed") ){
                 List<Vector3> points = (List<Vector3>)objects[i]["isComposed"];
                 Vector3 center = new Vector3(points.Average(x => x[0]), points.Average(x => x[1]), points.Average(x => x[2]));
-                temp.transform.position = center;
+                visu.transform.position = center;
                 Vector3 scale = new Vector3(points.Max(x => x[0])- points.Min(x => x[0]), points.Max(x => x[1]) - points.Min(x => x[1]), points.Max(x => x[2]) - points.Min(x => x[2]))/2;
-                temp.transform.localScale = temp.transform.localScale + scale;
+                visu.transform.localScale = visu.transform.localScale + scale;
             }
             else
             {
-                temp.transform.position = (Vector3)objects[i]["coord"];
+                visu.transform.position = (Vector3)objects[i]["coord"];
             }
-            temp.SetActive(false);
-            prefabInstance.Add(temp);
+            visu.transform.localScale = visu.transform.localScale * 0.3f;
+            visu.SetActive(false);
         }
     }
+
+    private void attachToParent(GameObject child, string elementName)
+    {
+        GameObject parent = Resources.Load("Prefabs/Plant") as GameObject;
+        parent = Instantiate(parent);
+        child.transform.parent = parent.transform;
+        parent.GetComponent<growth>().setDirectory(elementName);
+        prefabInstance.Add(parent);
+        Debug.Log(child.transform.parent.name);
+    }
+
     public Vector3 FindCenterOfTransforms(List<GameObject> transforms)
     {
         var bound = new Bounds(transforms[0].transform.position, Vector3.zero);
@@ -107,16 +120,20 @@ public class PlaceObject : MonoBehaviour
     {
         foreach (GameObject child in prefabInstance)
         {
-            // In the instance is inactive, enable it.
-            if (!child.activeInHierarchy)
+            GameObject visu = child.transform.GetChild(0).gameObject;
             {
-                child.SetActive(true);
+                if (!visu.activeInHierarchy)
+                {
+                    visu.SetActive(true);
+                }
             }
+            // In the instance is inactive, enable it.
+            
            
         }
         scene.transform.position = Vector3.zero;
-        scene.transform.localScale = new Vector3(0.01f,0.01f, 0.01f);
-        Debug.Log("activated");
+      //  scene.transform.localScale = new Vector3(0.01f,0.01f, 0.01f);
+       // Debug.Log("activated");
     }
 
 }

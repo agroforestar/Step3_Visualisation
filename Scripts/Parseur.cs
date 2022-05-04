@@ -30,7 +30,7 @@ namespace Parseur
                 string plant = element[0];
                 int x = Int32.Parse(element[1]);
                 int y = Int32.Parse(element[2]);
-                if(element.Length > 3)
+                if(element.Length > 3) // Line case
                 {
                     string stpoints = element[3].Replace("[", string.Empty).Replace("]", string.Empty);
                  
@@ -45,7 +45,7 @@ namespace Parseur
                         };
                     AddElement(plant, new Vector3(x, 0, y), listpoint, dictionary);
                 }
-                else
+                else // case pixel element 
                 {
                     AddElement(plant, new Vector3(x, 0, y), dictionary);
 

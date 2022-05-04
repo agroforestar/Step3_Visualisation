@@ -59,9 +59,11 @@ public class ARPlaceObject : MonoBehaviour
     {
         for(int i = 0; i< objects.Count; i++)
         {
-            Debug.Log(name);
-            GameObject prefab = Resources.Load("Prefabs/" + name) as GameObject;
-            GameObject temp = Instantiate(prefab);
+            GameObject prefab = Resources.Load("Prefabs/Plant") as GameObject;
+            prefab = Instantiate(prefab);
+            GameObject visu = Resources.Load("Prefabs/" + name+"/"+name+"_0") as GameObject;
+            GameObject temp = Instantiate(visu);
+            temp.transform.parent = prefab.transform;
             if(objects[i].ContainsKey("isComposed") ){
                 List<Vector3> points = (List<Vector3>)objects[i]["isComposed"];
                 Vector3 center = new Vector3(points.Average(x => x[0]), points.Average(x => x[1]), points.Average(x => x[2]));
