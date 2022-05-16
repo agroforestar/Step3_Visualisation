@@ -80,7 +80,7 @@ public class PlaceObject : MonoBehaviour
             {
                 visu.transform.position = (Vector3)objects[i]["coord"];
             }
-            visu.transform.localScale = visu.transform.localScale * 0.3f;
+            visu.transform.localScale = visu.transform.localScale;
             visu.SetActive(false);
         }
     }
@@ -92,7 +92,6 @@ public class PlaceObject : MonoBehaviour
         child.transform.parent = parent.transform;
         parent.GetComponent<growth>().setDirectory(elementName);
         prefabInstance.Add(parent);
-        Debug.Log(child.transform.parent.name);
     }
 
     public Vector3 FindCenterOfTransforms(List<GameObject> transforms)
@@ -131,9 +130,8 @@ public class PlaceObject : MonoBehaviour
             
            
         }
+        scene.transform.localScale = new Vector3(0.07f, 0.07f, 0.07f);
         scene.transform.position = Vector3.zero;
-      //  scene.transform.localScale = new Vector3(0.01f,0.01f, 0.01f);
-       // Debug.Log("activated");
     }
 
 }

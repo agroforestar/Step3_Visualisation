@@ -11,7 +11,7 @@ public class growth : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        InvokeRepeating("changePrefab", 10.0f, 5.0f);
+        InvokeRepeating("changePrefab", 10.0f, 3.0f);
     }
 
     // Update is called once per frame
@@ -30,9 +30,10 @@ public class growth : MonoBehaviour
         NewVisu = Instantiate(NewVisu);
         NewVisu.transform.position = current.transform.position;
         NewVisu.transform.rotation = current.transform.rotation;
-        NewVisu.transform.localScale = current.transform.localScale;
-
         NewVisu.transform.parent = this.transform;
+        NewVisu.transform.localScale = current.transform.localScale * current.transform.parent.transform.localScale.x;
+
+        
         Destroy(current);
     }
 

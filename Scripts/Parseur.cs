@@ -20,6 +20,8 @@ namespace Parseur
 
         public Dictionary<string, List<Dictionary<string, object>>> readFile(string path)
         {
+//            path = path.Replace("%2F", "/");
+   //         path = path.Replace("%3A", ":");
             theSourceFile = new FileInfo(path);
             reader = theSourceFile.OpenText();
             Dictionary<string, List<Dictionary<string, object>>> dictionary = new Dictionary<string, List<Dictionary<string, object>>>() ;

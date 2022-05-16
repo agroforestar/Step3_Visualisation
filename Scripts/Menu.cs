@@ -42,7 +42,6 @@ public class Menu : MonoBehaviour
 		// Title: "Load File", Submit button text: "Load"
 		yield return FileBrowser.WaitForLoadDialog(FileBrowser.PickMode.FilesAndFolders, true, null, null, "Load Files and Folders", "Load");
 
-
 		if (FileBrowser.Success)
 		{
 			// Print paths of the selected files (FileBrowser.Result) (null, if FileBrowser.Success is false)
@@ -52,13 +51,13 @@ public class Menu : MonoBehaviour
 			}
 
 			Global.inScene = elementInScene;
-			// Read the bytes of the first file via FileBrowserHelpers
+			/*// Read the bytes of the first file via FileBrowserHelpers
 			// Contrary to File.ReadAllBytes, this function works on Android 10+, as well
 			byte[] bytes = FileBrowserHelpers.ReadBytesFromFile(FileBrowser.Result[0]);
 
 			// Or, copy the first file to persistentDataPath
 			string destinationPath = Path.Combine(Application.persistentDataPath, FileBrowserHelpers.GetFilename(FileBrowser.Result[0]));
-			FileBrowserHelpers.CopyFile(FileBrowser.Result[0], destinationPath);
+			FileBrowserHelpers.CopyFile(FileBrowser.Result[0], destinationPath);*/
 		}
 	}
 
