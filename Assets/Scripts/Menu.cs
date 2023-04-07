@@ -8,8 +8,9 @@ using UnityEngine;
 using System.IO;
 using SimpleFileBrowser;
 using Parseur;
+using UnityEngine.SceneManagement;
 
-	/*
+/*
 	 Manage the menu to select the inuput file and load the scene
 	 */
 public class Menu : MonoBehaviour
@@ -18,6 +19,8 @@ public class Menu : MonoBehaviour
 	Dictionary<string, List<Dictionary<string, object>>> elementInScene;
 	void Start()
 	{
+		FileBrowser.AskPermissions = true;
+		FileBrowser.RequestPermission();
 		p = new Parseur.Parseur();
 	}
 
@@ -48,14 +51,16 @@ public class Menu : MonoBehaviour
 		// Load file/folder: both, Allow multiple selection: true
 		// Initial path: default (Documents), Initial filename: empty
 		// Title: "Load File", Submit button text: "Load"
-		yield return FileBrowser.WaitForLoadDialog(FileBrowser.PickMode.FilesAndFolders, true, null, null, "Load Files and Folders", "Load");
-
+		yield return FileBrowser.WaitForLoadDialog(FileBrowser.PickMode.FilesAndFolders, false, null, null, "Load Files and Folders", "Load");
+		
 		if (FileBrowser.Success)
 		{
 			// Print paths of the selected files (FileBrowser.Result) (null, if FileBrowser.Success is false)
+			print($"length => {FileBrowser.Result.Length}");
 			for (int i = 0; i < FileBrowser.Result.Length; i++)
 			{
-				elementInScene= p.readFile(FileBrowser.Result[i]);
+				print(FileBrowser.Result[i]);
+				elementInScene= p.readFile(Path.Combine(Application.persistentDataPath, FileBrowserHelpers.GetFilename(FileBrowser.Result[0])));//FileBrowser.Result[i]
 			}
 
 			Global.inScene = elementInScene;
@@ -76,7 +81,6 @@ public class Menu : MonoBehaviour
 		// Initial path: default (Documents), Initial filename: empty
 		// Title: "Load File", Submit button text: "Load"
 		yield return FileBrowser.WaitForLoadDialog(FileBrowser.PickMode.FilesAndFolders, true, null, null, "Load Files and Folders", "Load");
-
 
 		if (FileBrowser.Success)
 		{
@@ -101,12 +105,8 @@ public class Menu : MonoBehaviour
 		// Set filters (optional)
 		// It is sufficient to set the filters just once (instead of each time before showing the file browser dialog), 
 		// if all the dialogs will be using the same filters
-		FileBrowser.SetFilters(true, new FileBrowser.Filter("Input", ".json"));
-		FileBrowser.SetDefaultFilter(".json");
-		FileBrowser.SetExcludedExtensions(".lnk", ".tmp", ".zip", ".rar", ".exe");
-	
-		StartCoroutine(ConfigFileCoroutine());
-	}
+		SceneManager.LoadScene("ChangeConfigFile");
+    }
 
 	/*
 	 Call when user use button "Load Scene"

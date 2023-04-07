@@ -9,7 +9,6 @@ public class ImageRecognition : MonoBehaviour
 
     private ARTrackedImageManager aRTrackedImageManager;
     private PlaceObject _placeObject;
-
     private void Awake()
     {
         aRTrackedImageManager = FindObjectOfType<ARTrackedImageManager>();
