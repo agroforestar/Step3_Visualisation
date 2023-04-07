@@ -30,13 +30,13 @@ public class growth : MonoBehaviour
 
         GameObject current = this.transform.GetChild(0).gameObject;
 
-        currentVisu= (currentVisu+1)%allVisu.Length;
-        GameObject newVisu = Resources.Load(dir + name + "_"+ currentVisu.ToString() )as GameObject;
-        newVisu = Instantiate(newVisu);
+        currentVisu = (currentVisu+1)%allVisu.Length;
+        GameObject newVisu = Resources.Load(dir + name + "_" + currentVisu) as GameObject;
+        newVisu = Instantiate(newVisu, this.transform, true);
         newVisu.transform.position = current.transform.position;
         newVisu.transform.rotation = current.transform.rotation;
-        newVisu.transform.parent = this.transform;
         newVisu.transform.localScale = current.transform.localScale * current.transform.parent.transform.localScale.x;
+     
         Destroy(current);
     }
 

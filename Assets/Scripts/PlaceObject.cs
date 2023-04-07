@@ -114,6 +114,10 @@ public class PlaceObject : MonoBehaviour
     {
         GameObject visu = Instantiate(prefab);
         attachToParent(visu, name);
+        
+        if(visu.layer == LayerMask.NameToLayer("Tree"))
+            visu.transform.eulerAngles = new Vector3(0, Random.Range(0, 360), 0);
+        
         visu.SetActive(false);
         return visu;
     }
@@ -151,7 +155,6 @@ public class PlaceObject : MonoBehaviour
                 {
                     visu.SetActive(true);
                 }
-                
             }
             // In the instance is inactive, enable it.
 
