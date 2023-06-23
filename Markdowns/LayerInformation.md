@@ -6,28 +6,7 @@ Gabriel Masson
 
 # Documentation
 
-```plantuml
-@startuml
-class LayerInfoClass {
-    + LayerInfoClass(layer_:GameObject, color:Color)
-}
-class LayersInformation {
-    + ShowLayerBtn() : void
-    ChangePosition(culture:GameObject, destination:float, scale:float, setActive:bool) : IEnumerator
-}
-class Position {
-    + x : int <<get>> <<set>>
-    + y : int <<get>> <<set>>
-    + rank : int <<get>> <<set>>
-}
-LayerInfoClass --> "position" Position
-LayerInfoClass --> "parent" GameObject
-LayerInfoClass --> "layer" GameObject
-MonoBehaviour <|-- LayersInformation
-LayerInfoClass +-- Position
-@enduml
-
-```
+![LayerInfo.png](LayerInfo.png)
 
 # Fonctions
 

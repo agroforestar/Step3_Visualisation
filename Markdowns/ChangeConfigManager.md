@@ -5,44 +5,7 @@ Gabriel Masson
 
 # Documentation
 
-```plantuml
-@startuml
-class PlantsDef {
-    + name : string <<get>> <<set>>
-    + file : string <<get>> <<set>>
-    + color : string <<get>> <<set>>
-    + figure : string <<get>> <<set>>
-}
-class Plants {
-}
-class Config {
-    + ratio_pixel_meter : int <<get>> <<set>>
-}
-class ChangeConfigManager {
-    + ExitToMenu() : void
-    + ClosePopup() : void
-    + CloseMeta() : void
-    + Write() : void
-    + AddPlant() : void
-    + LoadExistingConfigFileEvent() : void
-    LoadExistingConfigFile() : IEnumerator
-}
-class "Dictionary`2"<T1,T2> {
-}
-class "List`1"<T> {
-}
-PlantsDef --> "dropdownColor" TMP_Dropdown
-PlantsDef --> "dropdownFigures" TMP_Dropdown
-Plants --> "point<string,PlantsDef>" "Dictionary`2"
-Plants --> "area<string,PlantsDef>" "Dictionary`2"
-Config --> "plants" Plants
-Config --> "color<string,string>" "Dictionary`2"
-Config --> "link<string>" "List`1"
-MonoBehaviour <|-- ChangeConfigManager
-ChangeConfigManager o-> "_config" Config
-@enduml
-
-```
+![ChangeConfigManager](ChangeConfigManager.png)
 
 # Fonctions
 
