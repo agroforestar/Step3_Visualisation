@@ -19,4 +19,4 @@ Dans Unity :
   2. Cocher la case de "Alpha clipping"
 
 Exempla de rendu :
-![alt text](https://github.com/agroforestar/Step3_Visualisation/new/main/Documentation/example.PNG?raw=true)
+![image](example.PNG)
