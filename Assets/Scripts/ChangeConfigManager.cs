@@ -2,22 +2,13 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Net.Mime;
-using System.Runtime.InteropServices;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 using SimpleFileBrowser;
 using TMPro;
-using UnityEditor;
 using UnityEngine;
-using UnityEngine.Purchasing.MiniJSON;
+using UnityEngine.Purchasing;
 using UnityEngine.SceneManagement;
-using UnityEngine.Serialization;
-using UnityEngine.UI;
-using UnityEngine.UIElements;
-using Button = UnityEngine.UI.Button;
 
 public class PlantsDef
 {
@@ -74,6 +65,11 @@ public class ChangeConfigManager : MonoBehaviour
         SceneManager.LoadScene("Openning");
     }
 
+    private void Start()
+    {
+        FileBrowser.AskPermissions = true;
+        FileBrowser.RequestPermission();
+    }
 
     public void ClosePopup() => GameObject.Find("PopupError").SetActive(false);
 
@@ -95,14 +91,9 @@ public class ChangeConfigManager : MonoBehaviour
             return;
         }
         
-        var path = Application.platform == RuntimePlatform.Android ? Path.Combine(Application.persistentDataPath, FileBrowserHelpers.GetFilename(FileBrowser.Result[0])) : Path.Combine(FileBrowser.Result[0]);
-        print(path);
-       using (StreamWriter w = new StreamWriter(path))
-        {
-            var stringWrite = JsonConvert.SerializeObject(_config, jsonSetting);
-            print(stringWrite);
-            w.Write(stringWrite);
-        }
+       
+        var stringWrite = JsonConvert.SerializeObject(_config, jsonSetting);
+        FileBrowserHelpers.WriteTextToFile(FileBrowser.Result[0], stringWrite);
     }
 
     private bool UpdateDropDownOptions()
@@ -253,13 +244,10 @@ public class ChangeConfigManager : MonoBehaviour
         }
     }
 
-    private void DeserializeConfig(string path)
+    private void DeserializeConfig(string json)
     {
-        using (StreamReader r = new StreamReader(path))
-        {
-            string json = r.ReadToEnd();
-            _config = JsonConvert.DeserializeObject<Config>(json);
-        }
+       
+        _config = JsonConvert.DeserializeObject<Config>(json);
 
         var content = GameObject.Find("ContentScrollView").transform;
         
@@ -286,12 +274,10 @@ public class ChangeConfigManager : MonoBehaviour
         
         if (FileBrowser.Success)
         {
-            for (int i = 0; i < FileBrowser.Result.Length; i++)
-            {
-                var path = Application.platform == RuntimePlatform.Android ? Path.Combine(Application.persistentDataPath, FileBrowserHelpers.GetFilename(FileBrowser.Result[0])) : Path.Combine(FileBrowser.Result[0]);
-                print(path);
-                DeserializeConfig(path);
-            }
+            
+            var json = FileBrowserHelpers.ReadTextFromFile(FileBrowser.Result[0]);
+            print(json);
+            DeserializeConfig(json);
         }
     }
 }

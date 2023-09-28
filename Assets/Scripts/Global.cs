@@ -13,10 +13,10 @@ public class Global : MonoBehaviour
     public static Loading loading;
     public static Dictionary<string, List<Dictionary<string, object>>> inScene;
     public static Dictionary<string, string> prefab3D;
-
+    public static List<LayerInfoClass> LayerInfoClassesList = new List<LayerInfoClass>();
 
     public enum LoadingType
     {
-        None, LoadLevel1,LoadMenu
+        None, LoadLevel1, LoadMenu
     }
 }
