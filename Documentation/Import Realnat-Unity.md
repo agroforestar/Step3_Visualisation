@@ -9,12 +9,15 @@
 
 ## Importation dans Unity
 1. Importer depuis le gestionnaires de fichier, les fichier .obj, .mtl et .png de l'objet 3D (Il y a un .png par face de l'imposteur)
+
 Dans Unity :
-2. Sélectionner tous les fichiers .png, et cocher la case "Alpha is transparence"
-3. A partir de l'objet 3D : 
-  1. Sélectionner les matériaux qui le composent
-  2. Faites un clic droit sur les matériaux et cliquer sur "Extract from Prefab"
-4. Dans l'inspecteur des matériaux obtenus :
+1. Sélectionner tous les fichiers .png, et cocher la case "Alpha is transparence"
+
+A partir de l'objet 3D :
+1. Sélectionner les matériaux qui le composent
+2. Faites un clic droit sur les matériaux et cliquer sur "Extract from Prefab"
+
+Dans l'inspecteur des matériaux obtenus :
   1. Modifier la valeur de "Render face" par "Both"
   2. Cocher la case de "Alpha clipping"
 
